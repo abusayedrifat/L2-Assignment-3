@@ -1,32 +1,21 @@
-import { connectDB } from '../../server';
+
 import express, { Request, Response } from 'express';
 import { Books } from '../schemas/book_Schema';
 
 
 export const booksRoutes = express.Router()
 
-
-
-
 booksRoutes.get('/', async (req: Request, res: Response) => {
 
-    try {
-        await connectDB();
+    const allBooks = await Books.find();
+    console.log(allBooks);
 
-        const allBooks = await Books.find();
+    res.json({
+        success: true,
+        message: "Books retrieved successfully",
+        data: allBooks,
+    });
 
-        res.json({
-            success: true,
-            message: "Books retrieved successfully",
-            data: allBooks,
-        });
-    } catch (error) {
-        console.error("GET /api/books error:", error);
-        res.status(500).json({
-            success: false,
-            message: "Failed to fetch books",
-        });
-    }
 })
 
 booksRoutes.post('/', async (req: Request, res: Response) => {

@@ -18,14 +18,14 @@ const app_1 = __importDefault(require("./app"));
 const dns_1 = __importDefault(require("dns"));
 let server;
 dns_1.default.setServers(["1.1.1.1", "8.8.8.8"]);
-const PORT = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield mongoose_1.default.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.faxnq.mongodb.net/libraryManagement?appName=Cluster0`);
+            yield mongoose_1.default.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.faxnq.mongodb.net/Library_Management?appName=Cluster0`);
             console.log('connected to mongodb');
-            server = app_1.default.listen(PORT, () => {
-                console.log(`listening from ${PORT}`);
+            server = app_1.default.listen(port, () => {
+                console.log(`listening from ${port}`);
             });
         }
         catch (error) {
