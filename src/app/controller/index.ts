@@ -1,5 +1,7 @@
+import { connectDB } from '../../server';
 import express, { Request, Response } from 'express';
 import { Books } from '../schemas/book_Schema';
+
 
 export const booksRoutes = express.Router()
 
@@ -7,13 +9,24 @@ export const booksRoutes = express.Router()
 
 
 booksRoutes.get('/', async (req: Request, res: Response) => {
-  
-    const allBooks = await Books.find()
-    res.json({
-        success: true,
-        message: "Books retrieved successfully",
-        data: allBooks
-    })
+
+    try {
+        await connectDB();
+
+        const allBooks = await Books.find();
+
+        res.json({
+            success: true,
+            message: "Books retrieved successfully",
+            data: allBooks,
+        });
+    } catch (error) {
+        console.error("GET /api/books error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch books",
+        });
+    }
 })
 
 booksRoutes.post('/', async (req: Request, res: Response) => {
@@ -35,13 +48,13 @@ booksRoutes.get('/:bookId', async (req: Request, res: Response) => {
     res.json({
         success: true,
         message: "Book retrived successfully",
-        data: book 
+        data: book
     })
 })
 booksRoutes.patch('/:bookId', async (req: Request, res: Response) => {
     const bookId = req.params.bookId
     const updateBody = req.body
-    const updatedBook = await Books.findByIdAndUpdate(bookId, updateBody, {new:true} )
+    const updatedBook = await Books.findByIdAndUpdate(bookId, updateBody, { new: true })
     res.json({
         success: true,
         message: "Book updated successfully",
