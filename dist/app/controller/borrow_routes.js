@@ -15,10 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.borrowBook = void 0;
 const express_1 = __importDefault(require("express"));
 const borrow_schema_1 = require("../schemas/borrow_schema");
+const book_Schema_1 = require("../schemas/book_Schema");
 exports.borrowBook = express_1.default.Router();
 exports.borrowBook.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
+    const books = yield book_Schema_1.Books.findById(body._id);
+    console.log(books);
     const borrowedBooks = yield borrow_schema_1.BorrowBooks.create(body);
+    console.log(exports.borrowBook);
     res.json({
         success: true,
         message: "Book borrowed successfully",

@@ -11,41 +11,48 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BorrowBooks = void 0;
 const mongoose_1 = require("mongoose");
+const book_Schema_1 = require("./book_Schema");
 const borrowSchema = new mongoose_1.Schema({
     book: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Books",
-        required: true
+        required: true,
     },
     quantity: {
         type: Number,
-        required: true
+        required: true,
     },
     dueDate: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
 }, {
     versionKey: false,
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-    _id: false
+    _id: false,
 });
-borrowSchema.post("aggregate", function (doc) {
+borrowSchema.pre("aggregate", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
-        this.pipeline().unshift({
-            //stage-1
-            $match: {
-                copies: { $gt: 0 }
+        yield book_Schema_1.Books.aggregate([
+            {
+                //stage-1
+                $match: {
+                    copies: { $gt: 0 },
+                },
+                //stage-2
+                $set: {
+                    copies: {
+                        $subtract: ["copies", "quantity"],
+                    },
+                },
             },
-            //stage-2
-            $set: {
-                copies: {
-                    $subtract: ["copies", "quantity"]
-                }
-            }
-        });
+        ]);
     });
 });
+// borrowSchema.post('save', async function (doc) {
+//   const bookSave =  await Books.findById({copies:doc._id})
+//   bookSave?.save()
+// })
 exports.BorrowBooks = (0, mongoose_1.model)("borrowBooks", borrowSchema);
