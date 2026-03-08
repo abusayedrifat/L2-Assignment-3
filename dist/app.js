@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const books_routes_1 = require("./app/controller/books_routes");
+const borrow_routes_1 = require("./app/controller/borrow_routes");
 // import cors from 'cors';
 const app = (0, express_1.default)();
 // const corsOption = {
@@ -14,6 +15,7 @@ const app = (0, express_1.default)();
 // app.use(cors())
 app.use(express_1.default.json());
 app.use('/api/books', books_routes_1.booksRoutes);
+app.use('/api/borrow', borrow_routes_1.borrowBook);
 app.get('/', (req, res) => {
     res.send('library management server is running');
 });

@@ -18,7 +18,7 @@ const app_1 = __importDefault(require("./app"));
 const dns_1 = __importDefault(require("dns"));
 let server;
 dns_1.default.setServers(["1.1.1.1", "8.8.8.8"]);
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {

@@ -8,7 +8,7 @@ let server: Server
 
 dns.setServers(["1.1.1.1", "8.8.8.8"])
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 3000
 
  async function main(){
 
